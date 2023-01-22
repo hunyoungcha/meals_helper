@@ -1,13 +1,11 @@
-
 #!/usr/bin/python3
 #-*-coding:utf-8-*-
 from urllib.request import urlopen
 from urllib import parse
 from bs4 import BeautifulSoup as bs
-from pprint import pprint
 import re
 
-def get_number(menu_name, num=0):  #메뉴 이름을 입력 받으면 레시피 넘버를 넘겨줌
+def get_number(menu_name, num):  #메뉴 이름을 입력 받으면 레시피 넘버를 넘겨줌
     html=urlopen(f"https://www.10000recipe.com/recipe/list.html?q={parse.quote(menu_name)}")
     obj=bs(html,"html.parser")
 
