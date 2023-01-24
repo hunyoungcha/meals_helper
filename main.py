@@ -1,5 +1,6 @@
 import tkinter as tk
 import crawling as cr
+from tkinter import filedialog
 from tkinter.messagebox import showerror
 
 window=tk.Tk()
@@ -7,6 +8,11 @@ window.title('meals_helper')
 window.geometry('800x800')
 
 cnt=0
+
+def Load():
+    filename = filedialog.askopenfilename(initialdir="/", title="Select file",
+                                          filetypes=(("*.jpg","*.png"),
+                                          ("all files", "*.*")))
 
 def search(menu):
     global cnt
@@ -84,7 +90,7 @@ save_lab.place(x=405, y=400)
 save_txt=tk.Text(window, width=48,height=20,font=30)
 save_txt.place(x=400, y=430)
 
-#저장 버튼
+#--> 버튼
 save_btn=tk.Button(window, width=12, height=4, text='-->' , background='gray',foreground='white')
 save_btn.place(x=280,y=460)
 
@@ -92,8 +98,20 @@ save_btn.place(x=280,y=460)
 create_btn=tk.Button(window,width=22, height=4, text='생성', background='blue',foreground='white')
 create_btn.place(x=5, y=640)
 
+#급식 라벨
+meal_lab=tk.Label(window,text="*업로드 된 급식 사진이 없습니다.",font=20)
+meal_lab.place(x=420,y=30)
+#급식 버튼
+meal_button=tk.Button(window,text='급식 사진 업로드',width=50, background='gray',foreground='white')
+meal_button.place(x=420,y=53)
 
+#간식 라벨
+snack_lab=tk.Label(window,text="*업로드 된 간식 사진이 없습니다.",font=20)
+snack_lab.place(x=420,y=100)
 
+#간식 버튼
+snack_button=tk.Button(window,text='간식 사진 업로드',width=50, background='gray',foreground='white')
+snack_button.place(x=420,y=123)
 
 window.bind('<F2>',input_btn) # 단축키, f2 == input_btn
 window.mainloop()
