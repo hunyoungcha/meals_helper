@@ -7,51 +7,64 @@ window=tk.Tk()
 window.title('meals_helper')
 window.geometry('800x800')
 
-cnt=0
+recipe_cnt=0
+menu_cnt=0
+
+def input_btn(): #입력 버튼
+    global menu_list, menu_cnt
+    ex=inx.get('1.0','end-1c')
+    menu_list=ex.split('\n')
+    print("menu_list= ",menu_list)
+    if len(menu_list)<menu_cnt:
+        return 0
+    search(menu_list[menu_cnt])
+
+def search(menu):
+    global recipe_cnt
+    outx.delete('1.0','end')
+    try:
+        menu_lab.config(text=menu)
+        outx.insert('1.0',cr.get_recipe(cr.get_number(menu,recipe_cnt)),'\n')
+    except:
+        showerror('Wrong','Wrong input')   
+
+
+def next_btn(): #다음 버튼 
+    global recipe_cnt,menu_list,menu_cnt
+    recipe_cnt+=1
+    print("recipe_cnt= ",recipe_cnt)
+    search(menu_list[menu_cnt])
+
+def priv_btn(): #이전 버튼
+    global recipe_cnt,menu_list,menu_cnt
+    print(recipe_cnt)
+    if recipe_cnt<1:
+        recipe_cnt=0
+        showerror('Wrong','첫 페이지 입니다')
+        return 0
+    recipe_cnt-=1
+    print("recipe_cnt= ",recipe_cnt)
+    search(menu_list[menu_cnt])
+
+
+def save_btn(): #--> 버튼
+    global menu_cnt
+    oup=outx.get('1.0','end-1c')
+    print('oup= ',oup)
+    save_txt.insert('1.0',oup)
+    outx.delete('1.0','end')
+    menu_cnt+=1
+    input_btn()
+
 
 def Load():
     filename = filedialog.askopenfilename(initialdir="/", title="Select file",
                                           filetypes=(("*.jpg","*.png"),
-                                          ("all files", "*.*")))
-
-def search(menu):
-    global cnt
-    outx.delete('1.0','end')
-    try:
-        menu_lab.config(text=menu)
-        outx.insert('1.0',cr.get_recipe(cr.get_number(menu,cnt)),'\n')
-    except:
-        showerror('Wrong','Wrong input')   
-
-# def save_btn():
+                                          ("all files", "*.*")))   
 
 
 
-def input_btn(event=''): #입력 버튼
-    global cnt,menu_list
-    cnt=0
-    ex=inx.get('1.0','end-1c')
-    menu_list=ex.split('\n')
-    
 
-
-
-def next_btn(): #다음 버튼 
-    global cnt#,menu_name
-    print(cnt)
-
-    cnt+=1
-    # search(menu_name)
-
-def priv_btn(): #이전 버튼
-    global cnt#,menu_name
-    print(cnt)
-    if cnt<0:
-        cnt=0
-        showerror('Wrong','첫 페이지 입니다')
-        return 0
-    cnt-=1
-    # search(menu_name)
     
 
 #메뉴 입력 위 라벨
@@ -91,7 +104,7 @@ save_txt=tk.Text(window, width=48,height=20,font=30)
 save_txt.place(x=400, y=430)
 
 #--> 버튼
-save_btn=tk.Button(window, width=12, height=4, text='-->' , background='gray',foreground='white')
+save_btn=tk.Button(window, width=12, height=4, text='-->' , background='gray',foreground='white', command=save_btn)
 save_btn.place(x=280,y=460)
 
 #생성 버튼
@@ -113,5 +126,5 @@ snack_lab.place(x=420,y=100)
 snack_button=tk.Button(window,text='간식 사진 업로드',width=50, background='gray',foreground='white')
 snack_button.place(x=420,y=123)
 
-window.bind('<F2>',input_btn) # 단축키, f2 == input_btn
+# window.bind('<F2>',input_btn) # 단축키, f2 == input_btn
 window.mainloop()
