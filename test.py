@@ -1,10 +1,9 @@
-import tkinter as tk
-from tkinter import filedialog
+class SomeClass:
+    def __init__(self):
+        self.me=0
+        self.you=1
+    def some_function(self):
+        print(self.me)
 
-def Load():
-    filename = filedialog.askopenfilename(initialdir="/", title="Select file",
-                                          filetypes=(("PPTX files", "*.pptx"),
-                                          ("all files", "*.*")))
-    print(filename)
-
-Load
+a=SomeClass
+a.some_function

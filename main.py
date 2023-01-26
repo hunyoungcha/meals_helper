@@ -1,3 +1,7 @@
+#클래스화 시키기
+#https://engineer-mole.tistory.com/190
+
+
 import tkinter as tk
 import crawling as cr
 from tkinter import filedialog
@@ -8,15 +12,15 @@ window.title('meals_helper')
 window.geometry('800x800')
 
 recipe_cnt=0
-menu_cnt=0
+
 
 def input_btn(): #입력 버튼
     global menu_list, menu_cnt
+    menu_cnt=0
+    total_material.delete('1.0','end-1c')
     ex=inx.get('1.0','end-1c')
     menu_list=ex.split('\n')
     print("menu_list= ",menu_list)
-    if len(menu_list)<menu_cnt:
-        return 0
     search(menu_list[menu_cnt])
 
 def search(menu):
@@ -48,19 +52,23 @@ def priv_btn(): #이전 버튼
 
 
 def save_btn(): #--> 버튼
-    global menu_cnt
+    global menu_cnt, menu_list
     oup=outx.get('1.0','end-1c')
     print('oup= ',oup)
-    save_txt.insert('1.0',oup)
+    total_material.insert('end-1c',oup)
     outx.delete('1.0','end')
     menu_cnt+=1
-    input_btn()
+    try:
+        search(menu_list[menu_cnt])
+    except:
+        return 0
 
 
 def Load():
     filename = filedialog.askopenfilename(initialdir="/", title="Select file",
                                           filetypes=(("*.jpg","*.png"),
                                           ("all files", "*.*")))   
+    return filename
 
 
 
@@ -96,12 +104,12 @@ pr_btn=tk.Button(window,text='이전', width=10, height=3, command=priv_btn,back
 pr_btn.place(x=5, y=575)
 
 #총 재료 라벨
-save_lab=tk.Label(window,text='전체 재료', font=20)
-save_lab.place(x=405, y=400)
+total_lab=tk.Label(window,text='전체 재료', font=20)
+total_lab.place(x=405, y=400)
 
 #총 재료 텍스트 박스
-save_txt=tk.Text(window, width=48,height=20,font=30)
-save_txt.place(x=400, y=430)
+total_material=tk.Text(window, width=48,height=20,font=30)
+total_material.place(x=400, y=430)
 
 #--> 버튼
 save_btn=tk.Button(window, width=12, height=4, text='-->' , background='gray',foreground='white', command=save_btn)
@@ -115,7 +123,7 @@ create_btn.place(x=5, y=640)
 meal_lab=tk.Label(window,text="*업로드 된 급식 사진이 없습니다.",font=20)
 meal_lab.place(x=420,y=30)
 #급식 버튼
-meal_button=tk.Button(window,text='급식 사진 업로드',width=50, background='gray',foreground='white')
+meal_button=tk.Button(window,text='급식 사진 업로드',width=50, background='gray',foreground='white', command=Load)
 meal_button.place(x=420,y=53)
 
 #간식 라벨
