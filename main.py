@@ -11,8 +11,7 @@ window=tk.Tk()
 window.title('meals_helper')
 window.geometry('800x800')
 
-recipe_cnt=0
-
+global recipe_cnt,menu_list,menu_cnt
 
 def input_btn(): #입력 버튼
     global menu_list, menu_cnt
@@ -51,7 +50,7 @@ def priv_btn(): #이전 버튼
     search(menu_list[menu_cnt])
 
 
-def save_btn(): #--> 버튼
+def save_btn_f(): #--> 버튼
     global menu_cnt, menu_list
     oup=outx.get('1.0','end-1c')
     print('oup= ',oup)
@@ -112,7 +111,7 @@ total_material=tk.Text(window, width=48,height=20,font=30)
 total_material.place(x=400, y=430)
 
 #--> 버튼
-save_btn=tk.Button(window, width=12, height=4, text='-->' , background='gray',foreground='white', command=save_btn)
+save_btn=tk.Button(window, width=12, height=4, text='-->' , background='gray',foreground='white', command=save_btn_f)
 save_btn.place(x=280,y=460)
 
 #생성 버튼

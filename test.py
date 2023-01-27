@@ -1,9 +1,11 @@
-class SomeClass:
+class tmp():
     def __init__(self):
-        self.me=0
-        self.you=1
-    def some_function(self):
-        print(self.me)
+        global a, b
+        self.a=0
+        self.b=0
+        
 
-a=SomeClass
-a.some_function
+    def add_a(self):
+        a+=1
+        return a
+tmp.add_a
