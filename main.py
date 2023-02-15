@@ -11,15 +11,19 @@ window=tk.Tk()
 window.title('meals_helper')
 window.geometry('800x800')
 
-global recipe_cnt,menu_list,menu_cnt
+recipe_cnt=0 #한 메뉴의 레시피 번호, ex)쌀밥의 레시피 1번 2번 ...
+menu_list=[] #input text에서 입력받은 여러 줄의 메뉴를 저장하는 리스트
+menu_cnt=0   #menu_list의 인덱스 번호를 컨트롤 하기 위한 변수
 
 def input_btn(): #입력 버튼
-    global menu_list, menu_cnt
+    global menu_list, menu_cnt, recipe_cnt
     menu_cnt=0
+    recipe_cnt=0
+    menu_list=[]
     total_material.delete('1.0','end-1c')
+    outx.delete('1.0','end-1c')
     ex=inx.get('1.0','end-1c')
     menu_list=ex.split('\n')
-    print("menu_list= ",menu_list)
     search(menu_list[menu_cnt])
 
 def search(menu):
@@ -35,27 +39,24 @@ def search(menu):
 def next_btn(): #다음 버튼 
     global recipe_cnt,menu_list,menu_cnt
     recipe_cnt+=1
-    print("recipe_cnt= ",recipe_cnt)
     search(menu_list[menu_cnt])
 
 def priv_btn(): #이전 버튼
     global recipe_cnt,menu_list,menu_cnt
-    print(recipe_cnt)
     if recipe_cnt<1:
         recipe_cnt=0
         showerror('Wrong','첫 페이지 입니다')
         return 0
     recipe_cnt-=1
-    print("recipe_cnt= ",recipe_cnt)
     search(menu_list[menu_cnt])
 
 
 def save_btn_f(): #--> 버튼
-    global menu_cnt, menu_list
+    global menu_cnt, menu_list,recipe_cnt
     oup=outx.get('1.0','end-1c')
-    print('oup= ',oup)
     total_material.insert('end-1c',oup)
     outx.delete('1.0','end')
+    recipe_cnt=0
     menu_cnt+=1
     try:
         search(menu_list[menu_cnt])
@@ -63,13 +64,13 @@ def save_btn_f(): #--> 버튼
         return 0
 
 
-def Load():
-    filename = filedialog.askopenfilename(initialdir="/", title="Select file",
-                                          filetypes=(("*.jpg","*.png"),
-                                          ("all files", "*.*")))   
-    return filename
+def Load_meal():
+    meal_file = filedialog.askopenfilename(initialdir="/", title="Select file",filetypes=(("*.jpg","*.jpg"),("*.png","*.png"),("all files", "*.*")))   
+    return print(meal_file)
 
-
+def Load_snack():
+    snack_file = filedialog.askopenfilename(initialdir="/", title="Select file",filetypes=(("*.jpg","*.png"),("*.png","*.png"),("all files", "*.*")))   
+    return print(snack_file)
 
 
     
@@ -122,7 +123,7 @@ create_btn.place(x=5, y=640)
 meal_lab=tk.Label(window,text="*업로드 된 급식 사진이 없습니다.",font=20)
 meal_lab.place(x=420,y=30)
 #급식 버튼
-meal_button=tk.Button(window,text='급식 사진 업로드',width=50, background='gray',foreground='white', command=Load)
+meal_button=tk.Button(window,text='급식 사진 업로드',width=50, background='gray',foreground='white', command=Load_meal)
 meal_button.place(x=420,y=53)
 
 #간식 라벨
@@ -130,7 +131,7 @@ snack_lab=tk.Label(window,text="*업로드 된 간식 사진이 없습니다.",f
 snack_lab.place(x=420,y=100)
 
 #간식 버튼
-snack_button=tk.Button(window,text='간식 사진 업로드',width=50, background='gray',foreground='white')
+snack_button=tk.Button(window,text='간식 사진 업로드',width=50, background='gray',foreground='white', command=Load_snack)
 snack_button.place(x=420,y=123)
 
 # window.bind('<F2>',input_btn) # 단축키, f2 == input_btn
