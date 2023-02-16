@@ -65,12 +65,12 @@ def save_btn_f(): #--> 버튼
 
 
 def Load_meal():
-    meal_file = filedialog.askopenfilename(initialdir="/", title="Select file",filetypes=(("*.jpg","*.jpg"),("*.png","*.png"),("all files", "*.*")))   
-    return print(meal_file)
+    meal_file = filedialog.askopenfilename(initialdir="/", title="Meal_File",filetypes=(("*.jpg","*.jpg"),("*.png","*.png"),("all files", "*.*")))
+    meal_lab.config(text=meal_file.split('/')[-1])
 
 def Load_snack():
-    snack_file = filedialog.askopenfilename(initialdir="/", title="Select file",filetypes=(("*.jpg","*.png"),("*.png","*.png"),("all files", "*.*")))   
-    return print(snack_file)
+    snack_file = filedialog.askopenfilename(initialdir="/", title="Snack_File",filetypes=(("*.jpg","*.jpg"),("*.png","*.png"),("all files", "*.*")))
+    snack_lab.config(text=snack_file.split('/')[-1]) 
 
 
     
@@ -133,6 +133,14 @@ snack_lab.place(x=420,y=100)
 #간식 버튼
 snack_button=tk.Button(window,text='간식 사진 업로드',width=50, background='gray',foreground='white', command=Load_snack)
 snack_button.place(x=420,y=123)
+
+#간식 텍스트 라벨
+snack_text_lab=tk.Label(window,text='간식', font=20)
+snack_text_lab.place(x=420, y=170)
+
+#간식 텍스트 박스
+snack_text=tk.Text(window,width=45,height=1,font=30)
+snack_text.place(x=420,y=193)
 
 # window.bind('<F2>',input_btn) # 단축키, f2 == input_btn
 window.mainloop()
