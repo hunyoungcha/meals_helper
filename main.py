@@ -1,11 +1,8 @@
-#클래스화 시키기
-#https://engineer-mole.tistory.com/190
-
-
 import tkinter as tk
 import crawling as cr
 from tkinter import filedialog
 from tkinter.messagebox import showerror
+import make_hwp
 
 window=tk.Tk()
 window.title('meals_helper')
@@ -29,11 +26,9 @@ def input_btn(): #입력 버튼
 def search(menu):
     global recipe_cnt
     outx.delete('1.0','end')
-    try:
-        menu_lab.config(text=menu)
-        outx.insert('1.0',cr.get_recipe(cr.get_number(menu,recipe_cnt)),'\n')
-    except:
-        showerror('Wrong','Wrong input')   
+    menu_lab.config(text=menu)
+    outx.insert('1.0',cr.get_recipe(cr.get_number(menu,recipe_cnt)),'\n')
+
 
 
 def next_btn(): #다음 버튼 
@@ -63,16 +58,22 @@ def save_btn_f(): #--> 버튼
     except:
         return 0
 
-
 def Load_meal():
-    meal_file = filedialog.askopenfilename(initialdir="/", title="Meal_File",filetypes=(("*.jpg","*.jpg"),("*.png","*.png"),("all files", "*.*")))
-    meal_lab.config(text=meal_file.split('/')[-1])
+    global meal_img
+    meal_img = filedialog.askopenfilename(initialdir="/", title="meal_img",filetypes=(("*.jpg","*.jpg"),("*.png","*.png"),("all files", "*.*")))
+    meal_lab.config(text=meal_img.split('/')[-1])
 
 def Load_snack():
-    snack_file = filedialog.askopenfilename(initialdir="/", title="Snack_File",filetypes=(("*.jpg","*.jpg"),("*.png","*.png"),("all files", "*.*")))
-    snack_lab.config(text=snack_file.split('/')[-1]) 
+    global snack_img
+    snack_img = filedialog.askopenfilename(initialdir="/", title="snack_img",filetypes=(("*.jpg","*.jpg"),("*.png","*.png"),("all files", "*.*")))
+    snack_lab.config(text=snack_img.split('/')[-1]) 
 
-
+def run():
+    menu=inx.get('1.0','end-1c').split('\n')
+    mat=total_material.get('1.0','end-1c').split(' ')
+    snack=snack_text.get('1.0','end-1c').split(' ')
+    file_name=name_text.get('1.0','end-1c')
+    make_hwp.make_hwp(menu, mat, snack, file_name, meal_img, snack_img)
     
 
 #메뉴 입력 위 라벨
@@ -116,7 +117,7 @@ save_btn=tk.Button(window, width=12, height=4, text='-->' , background='gray',fo
 save_btn.place(x=280,y=460)
 
 #생성 버튼
-create_btn=tk.Button(window,width=22, height=4, text='생성', background='blue',foreground='white')
+create_btn=tk.Button(window,width=22, height=4, text='생성', background='blue',foreground='white', command=run)
 create_btn.place(x=5, y=640)
 
 #급식 라벨
@@ -142,5 +143,12 @@ snack_text_lab.place(x=420, y=170)
 snack_text=tk.Text(window,width=45,height=1,font=30)
 snack_text.place(x=420,y=193)
 
-# window.bind('<F2>',input_btn) # 단축키, f2 == input_btn
+#파일 이름 라벨
+name_lab=tk.Label(window,text="파일 이름",font=20)
+name_lab.place(x=420, y=225)
+
+#파일 이름 텍스트 박스
+name_text=tk.Text(window,width=45,height=1,font=30)
+name_text.place(x=420,y=248)
+
 window.mainloop()

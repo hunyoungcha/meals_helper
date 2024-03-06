@@ -1,19 +1,52 @@
 import shutil
 import win32com.client as win32
 
-#https://www.codingnow.co.kr/python/?bmode=view&idx=6494279&back_url=&t=board&page= <-- 한글 자동화 참고 하면 좋을 블로그 #보안 팝업 7:05 부터
-#https://www.hancom.com/board/devmanualList.do?artcl_seq=3934 <-- 한글 개발 문서
+from PIL import Image
+
+def copy_hwp(name):
+    shutil.copyfile(r'./급식일지.hwp',rf'./{name[:-1]}.hwp') #한글 파일 카피 하는 코드
+
+def open_hwp(name):
+    global hwp
+    hwp = win32.gencache.EnsureDispatch("HWPFrame.HwpObject")
+    hwp.RegisterModule("FilePathCheckDLL", "FilePathCheckerModule")
+    hwp.Open(rf'C:\Users\차훈영\Desktop\python\meals_helper\{name[:-1]}.hwp') #사용 환경에 따라 경로 변경 필수
+
+def insert_img(row,column):
+    hwp.MovePos(row, column)
+    hwp.PutFieldText("CellText", 1)
+
+def img_setting(img,meal_or_snack):
+    image=Image.open(img)
+
+    if meal_or_snack=="meal":
+        image.thumbnail((300,200))
+        image.save(img)
+    elif meal_or_snack=="snack":
+        image.thumbnail((240,130))
+        image.save(img)
 
 
+def make_hwp(menu, mat, snack, file_name, meal_img, snack_img):
+    copy_hwp(file_name)
+    open_hwp(file_name)
+    
+    hwp.PutFieldText('m',file_name[2:4])
+    hwp.PutFieldText('d',file_name[4:6])
+    hwp.PutFieldText('a',file_name[6])
 
-hwp = win32.gencache.EnsureDispatch("HWPFrame.HwpObject")
-hwp.RegisterModule("FilePathCheckDLL", "FilePathCheckerModule")
+    hwp.PutFieldText('menu','\r\n'.join(menu))
+    hwp.PutFieldText('mat',','.join(mat))
+    hwp.PutFieldText('snack',','.join(snack))
 
+    img_setting(meal_img,"meal")
+    hwp.MoveToField('meal_img')
+    hwp.InsertPicture(meal_img)
 
+    img_setting(snack_img,'snack')
+    hwp.MoveToField('snack_img')
+    hwp.InsertPicture(snack_img)
 
-def make_hwp(name):
-    shutil.copyfile(r'./급식일지.hwp',rf'./{name}.hwp') #카피 하는 코드
-    hwp.Open(rf'C:\Users\차훈영\Desktop\python\meals_helper/{name}.hwp')
-    field_list=[i for i in hwp.GetFieldList().split('\x02')] #각각의 필드가 저장되있는 리스트
-    print(field_list)
-make_hwp('2037010')
+    hwp.Save()
+    hwp.Quit()
+
