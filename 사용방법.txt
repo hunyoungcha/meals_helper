@@ -18,5 +18,11 @@
 
 *dll파일 설정하면 보안 팝업창 안뜸*
 
+*필수 설정*
+
+1. make_hwp.py 파일의 open경로 변경
+
+2. 한글 파일 보안 팝업 설정
 https://www.codingnow.co.kr/python/?bmode=view&idx=6494279&back_url=&t=board&page= <-- 보안 팝업 설정 7:05 부터
 https://www.hancom.com/board/devmanualList.do?artcl_seq=3934 <-- 한글 개발 문서
+

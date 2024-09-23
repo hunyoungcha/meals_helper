@@ -1,5 +1,6 @@
 import shutil
 import win32com.client as win32
+import time
 
 from PIL import Image
 
@@ -10,7 +11,7 @@ def open_hwp(name):
     global hwp
     hwp = win32.gencache.EnsureDispatch("HWPFrame.HwpObject")
     hwp.RegisterModule("FilePathCheckDLL", "FilePathCheckerModule")
-    hwp.Open(rf'C:\Users\차훈영\Desktop\python\meals_helper\{name[:-1]}.hwp') #사용 환경에 따라 경로 변경 필수
+    hwp.Open(rf'C:\Users\차훈영\Desktop\개발파일\python\meals_helper\{name[:-1]}.hwp') #사용 환경에 따라 경로 변경 필수
 
 def insert_img(row,column):
     hwp.MovePos(row, column)
@@ -29,6 +30,7 @@ def img_setting(img,meal_or_snack):
 
 def make_hwp(menu, mat, snack, file_name, meal_img, snack_img):
     copy_hwp(file_name)
+    time.sleep(1)
     open_hwp(file_name)
     
     hwp.PutFieldText('m',file_name[2:4])

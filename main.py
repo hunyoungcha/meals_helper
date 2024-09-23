@@ -21,14 +21,17 @@ def input_btn(): #입력 버튼
     outx.delete('1.0','end-1c')
     ex=inx.get('1.0','end-1c')
     menu_list=ex.split('\n')
+
     search(menu_list[menu_cnt])
 
 def search(menu):
-    global recipe_cnt
+    global recipe_cnt, menu_cnt
+    menu_cnt+=1
     outx.delete('1.0','end')
     menu_lab.config(text=menu)
     outx.insert('1.0', ' '.join(cr.get_recipe(cr.get_number(menu, recipe_cnt))), '\n')
     outx.insert('end', ' ')
+    
 
 
 
@@ -54,11 +57,10 @@ def save_btn_f(): #--> 버튼
     total_material.insert('end-1c',oup)
     outx.delete('1.0','end')
     recipe_cnt=0
-    menu_cnt+=1
-    try:
+
+    if len(menu_list)-1 > menu_cnt:
         search(menu_list[menu_cnt])
-    except:
-        return 0
+
 
 def Load_meal():
     global meal_img
