@@ -27,7 +27,9 @@ def search(menu):
     global recipe_cnt
     outx.delete('1.0','end')
     menu_lab.config(text=menu)
-    outx.insert('1.0',cr.get_recipe(cr.get_number(menu,recipe_cnt)),'\n')
+    outx.insert('1.0', ' '.join(cr.get_recipe(cr.get_number(menu, recipe_cnt))), '\n')
+    outx.insert('end', ' ')
+
 
 
 
